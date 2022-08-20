@@ -1,4 +1,5 @@
 from pprint import pprint
+
 with open('text.txt') as f:
     cook_book = {}
     for line in f:
@@ -13,16 +14,20 @@ with open('text.txt') as f:
         f.readline().strip()
 pprint(cook_book)
 
+
 def get_shop_list_by_dishes(dishes, person_count):
-    for dishes in cook_book.items():
-         for inn in dishes[1]:
-             inn['quantity'] *= person_count
-    print(dishes[1])
+    spisok = {}
+    for dish in dishes:
+        if dish in cook_book:
+            for name_ in cook_book[dish]:
+                name_['quantity'] *= person_count
+                if name_['ingredient_name'] not in spisok:
+                    spisok[name_['ingredient_name']] = {'measure': name_['measure'], 'quantity': int(name_['quantity'])}
+                else:
+                    spisok[name_['ingredient_name']]['quantity'] += int(name_['quantity'])
+        else:
+            print(f'Рецепта для блюда {dish} нет в книге')
+    pprint(spisok)
 
-get_shop_list_by_dishes(['Фахитос'], 2)
 
-
-
-
-
-
+get_shop_list_by_dishes(['Омлет', 'Фахитос', 'Баклажаны', 'Торт'], 5)
